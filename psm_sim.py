@@ -4,9 +4,30 @@ import json
 import csv
 import matplotlib.pyplot as plt
 
-# Load parameters
-with open('parameters.json', 'r') as f:
-    params = json.load(f)
+# Load parameters (with fallback if file missing)
+try:
+    with open('parameters.json', 'r') as f:
+        params = json.load(f)
+except FileNotFoundError:
+    print("parameters.json not found - using example defaults")
+    params = {
+        "tanks": ["US", "China", "Canada", "EU", "LatAm", "Other"],
+        "initial_P": [29.15, 19.28, 2.25, 19.45, 7.12, 70.8],
+        "C": [0.023, 0.045, 0.008, 0.012, 0.022, 0.03],
+        "L": [0.03, 0.016, 0.0338, 0.032, 0.0764, 0.052],
+        "K": [[0, 0.03, 0.02, 0.02, 0.015, 0.01],
+              [0.03, 0, 0.01, 0.015, 0.01, 0.005],
+              [0.02, 0.01, 0, 0.015, 0.01, 0.005],
+              [0.02, 0.015, 0.015, 0, 0.01, 0.01],
+              [0.015, 0.01, 0.01, 0.01, 0, 0.005],
+              [0.01, 0.005, 0.005, 0.01, 0.005, 0]],
+        "R_baseline": [[1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                       [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                       [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                       [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                       [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                       [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]]
+    }
 
 tanks = params['tanks']
 P0 = np.array(params['initial_P'])
@@ -15,32 +36,32 @@ L = np.array(params['L'])
 K = np.array(params['K'])
 R = np.array(params['R_baseline'])
 
-# PSM dynamics function (corrected for pairwise differences)
-def psm_dynamics(P, t, C, L, K, R, stochastic=False):
+# PSM dynamics function (corrected for pairwise differences with weekly scaling)
+def psm_dynamics(P, t, C, L, K, R, stochastic=False, leak_sigma=0.005, flow_sigma=0.01):
     n = len(P)
     flows = np.zeros(n)
     for i in range(n):
         for j in range(n):
             if i != j:
-                flows[i] -= K[i][j] * R[i][j] * (P[i] - P[j])
-    dPdt = C * P - L * P + flows
+                flows[i] -= K[i][j] * R[i][j] * (P[i] - P[j]) / 52  # Weekly scale
+    dPdt = (C * P / 52) - L * P + flows  # Weekly scale for C
     if stochastic:
-        dPdt += np.random.normal(0, 0.005 * P)  # Leak noise
+        dPdt += np.random.normal(0, leak_sigma * P) + np.random.normal(0, flow_sigma * flows)  # Configurable noise
     return dPdt
 
-# Run simulation
-def run_sim(P0, t, C, L, K, R, stochastic=False, num_runs=1):
+# Run simulation (configurable stochastic/ensembles)
+def run_sim(P0, t, C, L, K, R, stochastic=False, num_runs=1, leak_sigma=0.005, flow_sigma=0.01):
     if stochastic and num_runs > 1:
-        results = [odeint(psm_dynamics, P0, t, args=(C, L, K, R, True))[-1] for _ in range(num_runs)]
+        results = [odeint(psm_dynamics, P0, t, args=(C, L, K, R, True, leak_sigma, flow_sigma))[-1] for _ in range(num_runs)]
         mean = np.mean(results, axis=0)
         std = np.std(results, axis=0)
         return mean, std
     else:
-        return odeint(psm_dynamics, P0, t, args=(C, L, K, R, stochastic))[-1], np.zeros_like(P0)
+        return odeint(psm_dynamics, P0, t, args=(C, L, K, R, stochastic, leak_sigma, flow_sigma))[-1], np.zeros_like(P0)
 
 # Example: 1 week sim
 t = np.linspace(0, 1/52, 2)
-mean, std = run_sim(P0, t, C, L, K, R, stochastic=True, num_runs=100)
+mean, std = run_sim(P0, t, C, L, K, R, stochastic=True, num_runs=100, leak_sigma=0.005, flow_sigma=0.01)
 print("Mean:", mean)
 print("Std:", std)
 
