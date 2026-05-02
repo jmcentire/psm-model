@@ -1,0 +1,33 @@
+name: psm-model
+audience: public
+description: >
+  Pressure System Model for economic diagnostics. Models economies
+  as pressure tank networks with compressors, leaks, and flows.
+  Fast what-if analysis complementing DSGE/CGE models.
+
+domains:
+  - economics
+  - modeling
+  - simulation
+  - policy-analysis
+  - research
+
+voice:
+  tone: precise, analogy-driven, empirical
+  principles:
+    - Pressure metaphor maps directly to economic flows
+    - Fast simulation enables interactive what-if exploration
+    - Complements, not replaces, traditional economic models
+  anti-patterns:
+    - Over-claiming predictive accuracy
+    - Ignoring model limitations vs DSGE/CGE
+
+standards:
+  code_review:
+    - NumPy/SciPy for numerical computation
+    - Matplotlib for visualization
+    - Reproducible from single script
+  documentation:
+    - LaTeX paper alongside code
+
+connects_to: []
