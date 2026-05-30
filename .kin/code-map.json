@@ -1,72 +1,72 @@
 {
-  "version": "1.0.0",
-  "project": {
-    "name": "psm-model",
-    "description": "Code map exported from Kindex for psm-model.",
-    "languages": [
-      "Python"
-    ],
-    "frameworks": [],
-    "analyzedAt": "2026-05-24T15:01:12",
-    "gitCommitHash": "34db1a2253683e3859be4de3a6052482f7670878"
-  },
+  "edges": [],
+  "layers": [
+    {
+      "description": "Kindex-inferred core layer.",
+      "id": "core",
+      "name": "Core",
+      "nodeIds": [
+        "code-mod-psm-model-c4e96a8cce2b",
+        "code-mod-psm-model-e556abf566fb"
+      ]
+    }
+  ],
   "nodes": [
     {
-      "id": "code-mod-psm-model-e556abf566fb",
-      "type": "file",
-      "name": "psm_sim.py",
+      "complexity": 2,
       "filePath": "psm_sim.py",
+      "id": "code-mod-psm-model-e556abf566fb",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "psm_sim.py",
       "summary": "Language: Python | Path: psm_sim.py | ~109 lines ## Functions - psm_dynamics(P, C, L, K, R, stochastic=False, leak_sigma=0.005, flow_sigma=0.01)",
       "tags": [
         "code",
         "python"
       ],
-      "complexity": 2,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
+      "type": "file"
     },
     {
-      "id": "code-mod-psm-model-c4e96a8cce2b",
-      "type": "file",
-      "name": "run_full_validation.py",
+      "complexity": 7,
       "filePath": "run_full_validation.py",
+      "id": "code-mod-psm-model-c4e96a8cce2b",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "run_full_validation.py",
       "summary": "Language: Python | Path: run_full_validation.py | ~537 lines ## Functions - ensure_dir(path: str)",
       "tags": [
         "code",
         "python"
       ],
-      "complexity": 7,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
+      "type": "file"
     }
   ],
-  "edges": [],
-  "layers": [
-    {
-      "id": "core",
-      "name": "Core",
-      "description": "Kindex-inferred core layer.",
-      "nodeIds": [
-        "code-mod-psm-model-c4e96a8cce2b",
-        "code-mod-psm-model-e556abf566fb"
-      ]
-    }
-  ],
+  "project": {
+    "analyzedAt": "2026-05-24T17:35:15-05:00",
+    "description": "Code map exported from Kindex for psm-model.",
+    "frameworks": [],
+    "gitCommitHash": "bc14e0c5e5a5ecc8dc2abc7736162d3d497ebd22",
+    "languages": [
+      "Python"
+    ],
+    "name": "psm-model"
+  },
   "tour": [
     {
-      "order": 1,
-      "title": "Core",
       "description": "Review 2 node(s) in the Core layer.",
       "nodeIds": [
         "code-mod-psm-model-c4e96a8cce2b",
         "code-mod-psm-model-e556abf566fb"
-      ]
+      ],
+      "order": 1,
+      "title": "Core"
     }
-  ]
+  ],
+  "version": "1.0.0"
 }
