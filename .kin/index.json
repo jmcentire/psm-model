@@ -1,0 +1,34 @@
+{
+  "domains": [
+    "code",
+    "python"
+  ],
+  "node_count": 2,
+  "nodes": [
+    {
+      "domains": [
+        "code",
+        "python"
+      ],
+      "id": "code-mod-psm-model-c4e96a8cce2b",
+      "title": "run_full_validation.py",
+      "type": "artifact",
+      "updated_at": "2026-05-30T14:49:50",
+      "weight": 0.5
+    },
+    {
+      "domains": [
+        "code",
+        "python"
+      ],
+      "id": "code-mod-psm-model-e556abf566fb",
+      "title": "psm_sim.py",
+      "type": "artifact",
+      "updated_at": "2026-05-30T14:49:50",
+      "weight": 0.5
+    }
+  ],
+  "repo": "psm-model",
+  "source_updated_at": "2026-05-30T14:49:50",
+  "version": 1
+}
